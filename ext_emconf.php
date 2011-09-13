@@ -3,7 +3,7 @@
 ########################################################################
 # Extension Manager/Repository config file for ext "cps_stopdc".
 #
-# Auto generated 14-09-2011 00:19
+# Auto generated 14-09-2011 00:21
 #
 # Manual updates:
 # Only the data in the array - everything else is removed by next
@@ -15,7 +15,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'description' => 'Forces TYPO3 to use the latest url for any page. This helps to avoid duplicate content.',
 	'category' => 'fe',
 	'shy' => 0,
-	'version' => '0.1.2',
+	'version' => '0.1.3',
 	'dependencies' => '',
 	'conflicts' => '',
 	'priority' => '',
@@ -43,7 +43,7 @@ $EM_CONF[$_EXTKEY] = array(
 		'suggests' => array(
 		),
 	),
-	'_md5_values_when_last_written' => 'a:6:{s:9:"ChangeLog";s:4:"5149";s:22:"class.tx_cpsstopdc.php";s:4:"af23";s:21:"ext_conf_template.txt";s:4:"d618";s:12:"ext_icon.gif";s:4:"3c44";s:17:"ext_localconf.php";s:4:"1c4e";s:13:"locallang.xml";s:4:"fcfa";}',
+	'_md5_values_when_last_written' => 'a:6:{s:9:"ChangeLog";s:4:"d1b9";s:22:"class.tx_cpsstopdc.php";s:4:"38b8";s:21:"ext_conf_template.txt";s:4:"d618";s:12:"ext_icon.gif";s:4:"3c44";s:17:"ext_localconf.php";s:4:"1c4e";s:13:"locallang.xml";s:4:"fcfa";}',
 );
 
 ?>
