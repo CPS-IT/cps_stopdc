@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>database</type>
+		<description>Language labels for extension &quot;realurl_force404lang&quot;</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="extmng.header">Header: Send string as header before redirecting. Default: 'HTTP/1.1 301 Moved Permanently'</label>
+			<label index="extmng.useCoolUri">Enable CoolURI support: Stop expiration of old urls.</label>
+			<label index="extmng.useRealurl">Enable realurl support: Stop expiration of old page paths.</label>
+			<label index="extmng.extendExpiration">Extend expiration date: Extend expiration date by x days.</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="extmng.header">Header: Dieser String wird vor der Weiterleitung als Header gesandt. Standard: 'HTTP/1.1 301 Moved Permanently'</label>
+			<label index="extmng.useCoolUri">Unterstützung für CoolURI: Verhindert, dass alte Urls ablaufen.</label>
+			<label index="extmng.useRealurl">Unterstützung für realurl: Verhindert, dass alte Seitenpfade ablaufen.</label>
+			<label index="extmng.extendExpiration">Ablaufdatum verlängern: Das Ablaufdatum alter Urls um x Tage verlängern.</label>
+		</languageKey>
+	</data>
+</T3locallang>
