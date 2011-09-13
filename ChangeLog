@@ -1,6 +1,14 @@
+2011-07-22 Nicole Cordes  <cordes@cps-it.de>
+
+	* Release of cps_stopdc 0.3.1
+
+2011-07-22 Nicole Cordes  <cordes@cps-it.de>
+
+	* Fixed dependency to cps_devlib which was deleted while uploading to TER
+
 2011-07-21 Nicole Cordes  <cordes@cps-it.de>
 
-	* Release of cps_stopdc 0.2.1
+	* Release of cps_stopdc 0.3.0
 
 2011-07-21 Nicole Cordes  <cordes@cps-it.de>
 
