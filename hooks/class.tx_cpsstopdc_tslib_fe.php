@@ -44,7 +44,7 @@ class tx_cpsstopdc {
 		// If any id was found so far
 		if (intval($GLOBALS['TSFE']->id) > 0) {
 
-			$this->cObj = t3lib_div::makeInstance('tslib_cObj');
+			$local_cObj = t3lib_div::makeInstance('tslib_cObj');
 
 			// Prepare array with query string information for typolink function
 			// Strip id from array as it's an own parameter
@@ -53,11 +53,21 @@ class tx_cpsstopdc {
 			// Prepare urls for comparison
 			$currentUrlArray = parse_url(t3lib_div::getIndpEnv('REQUEST_URI'));
 			if ($currentUrlArray['path'][0] != '/') $currentUrlArray['path'] = '/' . $currentUrlArray['path'];
-			$latestUrl = $this->cObj->getTypoLink_URL($GLOBALS['TSFE']->id, $queryArray);
+			$latestUrl = $local_cObj->getTypoLink_URL($GLOBALS['TSFE']->id, $queryArray);
 			$latestUrlArray = parse_url($latestUrl);
 			if ($latestUrlArray['path'][0] != '/') $latestUrlArray['path'] = '/' . $latestUrlArray['path'];
 
-			if ($currentUrlArray['path'] != $latestUrlArray['path']) {
+			// Check for site root
+			if (($GLOBALS['TSFE']->page['is_siteroot']) AND (!count($queryArray))) {
+				$latestUrlArray['path'] = '/';
+				$latestUrl = '/';
+			}
+
+			// Compare arrays
+			$resultArray = array_diff_assoc($currentUrlArray, $latestUrlArray);
+
+			// Redirect if there are any differences
+			if (count($resultArray)) {
 
 				// Send header from extension configuration
 				if ($this->extConf['header']) {
@@ -111,6 +121,9 @@ class tx_cpsstopdc {
 			// Only add canonical url when not already exists
 			if (strpos($headerData, 'rel="canonical"') === false) {
 
+				// Use local cObj as cached pages haven't any cObj
+				$local_cObj = t3lib_div::makeInstance('tslib_cObj');
+
 				if ($this->extConf['removeVarsInCanonicalUrl'] == 'all') {
 					$queryArray = array();
 				} else {
@@ -129,7 +142,7 @@ class tx_cpsstopdc {
 				$id = $pObj->contentPid;
 
 				// Get url and link tag
-				$url = $pObj->cObj->getTypoLink_URL($id, $queryArray);
+				$url = $local_cObj->getTypoLink_URL($id, $queryArray);
 				$canonical = '<link rel="canonical" href="' . (($pObj->config['config']['baseURL']) ? $pObj->config['config']['baseURL'] : '') . $url . '" ' . tx_cpsdevlib_extmgm::getEndingSlash() . '>';
 
 				// Restore mount point and link vars

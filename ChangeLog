@@ -1,3 +1,19 @@
+2011-07-21 Nicole Cordes  <cordes@cps-it.de>
+
+	* Release of cps_stopdc 0.2.1
+
+2011-07-21 Nicole Cordes  <cordes@cps-it.de>
+
+	Canonical urls:
+	* Fixed canonical url support for cached pages (problem with $pObj->cObj)
+
+	Extension:
+	* Updated marked as stable
+
+	Redirects:
+	* Added check for site root
+	* Updated comparison for urls (old and latest ones) by using array_diff_assoc
+
 2011-07-19 Nicole Cordes  <cordes@cps-it.de>
 
 	* Release of cps_stopdc 0.2.0
