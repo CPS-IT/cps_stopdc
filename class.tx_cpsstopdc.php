@@ -25,6 +25,8 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+require_once(t3lib_extMgm::extPath('cps_devlib').'class.tx_cpsdevlib_div.php');
+
 class tx_cpsstopdc {
 
 	/**
