@@ -89,4 +89,8 @@ class tx_cpsstopdc {
 		}
 	}
 }
+
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/cps_stopdc/class.tx_cpsstopdc.php'])    {
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/cps_stopdc/class.tx_cpsstopdc.php']);
+}
 ?>

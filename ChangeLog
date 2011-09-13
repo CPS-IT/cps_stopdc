@@ -1,3 +1,11 @@
 2011-06-23 Nicole Cordes  <cordes@cps-it.de>
 
+	* Release of cps_stopdc 0.1.1
+
+2011-06-23 Nicole Cordes  <cordes@cps-it.de>
+
+	* Added XCLASS to class tx_cpsstopdc (file class.tx_cpsstopdc.php)
+
+2011-06-23 Nicole Cordes  <cordes@cps-it.de>
+
 	* Initial release
