@@ -1,3 +1,12 @@
+2011-07-19 Nicole Cordes  <cordes@cps-it.de>
+
+	* Release of cps_stopdc 0.2.0
+
+2011-07-19 Nicole Cordes  <cordes@cps-it.de>
+
+	* Added new function to support canonical urls (even for mount points and replace content functionality)
+	* Updated use of new hook checkDataSubmission to improve checking
+
 2011-06-23 Nicole Cordes  <cordes@cps-it.de>
 
 	* Release of cps_stopdc 0.1.3

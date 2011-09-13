@@ -9,3 +9,9 @@ useRealurl = 1
 
 # cat=basic/enable; type=int[1-366]; label=LLL:EXT:cps_stopdc/locallang.xml:extmng.extendExpiration
 extendExpiration = 365
+
+# cat=basic/enable; type=boolean; label=LLL:EXT:cps_stopdc/locallang.xml:extmng.canonicalUrl
+canonicalUrl = 1
+
+# cat=basic/enable; type=string; label=LLL:EXT:cps_stopdc/locallang.xml:extmng.removeVarsInCanonicalUrl
+removeVarsInCanonicalUrl = id,MP,no_cache,type
