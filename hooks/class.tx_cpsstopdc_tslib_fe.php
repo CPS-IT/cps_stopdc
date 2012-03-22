@@ -48,7 +48,8 @@ class tx_cpsstopdc {
 
 			// Prepare array with query string information for typolink function
 			// Strip id from array as it's an own parameter
-			$queryArray = tx_cpsdevlib_div::queryStringToArray(t3lib_div::getIndpEnv('QUERY_STRING'), 'id');
+			// Decode url as it's encoded by TYPO3 function again
+			$queryArray = tx_cpsdevlib_div::queryStringToArray(rawurldecode(t3lib_div::getIndpEnv('QUERY_STRING')), 'id');
 
 			// Prepare urls for comparison
 			$currentUrlArray = parse_url(t3lib_div::getIndpEnv('REQUEST_URI'));

@@ -1,3 +1,11 @@
+2012-03-22 Nicole Cordes  <cordes@cps-it.de>
+
+	* Release of cps_stopdc 0.3.2
+
+2012-03-22 Nicole Cordes  <cordes@cps-it.de>
+
+	* Fixed problem with decoded url parameter (eg. with tip-a-friend)
+
 2011-07-22 Nicole Cordes  <cordes@cps-it.de>
 
 	* Release of cps_stopdc 0.3.1
