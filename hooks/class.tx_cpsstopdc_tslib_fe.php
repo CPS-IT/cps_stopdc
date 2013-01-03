@@ -58,9 +58,13 @@ class tx_cpsstopdc {
 			// Prepare urls for comparison
 			$currentUrlArray = parse_url(t3lib_div::getIndpEnv('REQUEST_URI'));
 			if ($currentUrlArray['path'][0] != '/') $currentUrlArray['path'] = '/' . $currentUrlArray['path'];
+			// Decode query part for comparison reason
+			if (isset($currentUrlArray['query'])) $currentUrlArray['query'] = rawurldecode($currentUrlArray['query']);
 			$latestUrl = $local_cObj->getTypoLink_URL($GLOBALS['TSFE']->id, $queryArray);
 			$latestUrlArray = parse_url($latestUrl);
 			if ($latestUrlArray['path'][0] != '/') $latestUrlArray['path'] = '/' . $latestUrlArray['path'];
+			// Decode query part for comparison reason
+			if (isset($latestUrlArray['query'])) $latestUrlArray['query'] = rawurldecode($latestUrlArray['query']);
 
 			// Check for site root
 			if (($GLOBALS['TSFE']->page['is_siteroot']) AND (!count($queryArray))) {
