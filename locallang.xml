@@ -11,7 +11,7 @@
 			<label index="extmng.useRealurl">Duplicate Content - Enable realurl support: Stop expiration of old page paths.</label>
 			<label index="extmng.extendExpiration">Duplicate Content - Extend expiration date: Extend expiration date by x days.</label>
 			<label index="extmng.canonicalUrl">Canonical Url - Enable: Set automatically canonical link for all sites in header data.</label>
-			<label index="extmng.removeVarsInCanonicalUrl">Canonical Url - Remove vars: Remove defined variables from current query string. Use 'all' to remove all variables. Default: 'id,MP,no_cache'</label>
+			<label index="extmng.removeVarsInCanonicalUrl">Canonical Url - Remove vars: Remove defined variables from current query string. Use 'all' to remove all variables. Default: 'id,MP,no_cache,type'</label>
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="extmng.header">Doppelter Inhalt - Header: Dieser String wird vor der Weiterleitung als Header gesandt. Standard: 'HTTP/1.1 301 Moved Permanently'</label>
@@ -19,7 +19,7 @@
 			<label index="extmng.useRealurl">Doppelter Inhalt - Unterstützung für realurl: Verhindert, dass alte Seitenpfade ablaufen.</label>
 			<label index="extmng.extendExpiration">Doppelter Inhalt - Ablaufdatum verlängern: Das Ablaufdatum alter Urls um x Tage verlängern.</label>
 			<label index="extmng.canonicalUrl">Canonical Url - Aktivierung: Setzt für alle Seiten den Link automatisch im Header-Bereich.</label>
-			<label index="extmng.removeVarsInCanonicalUrl">Canonical Url - Löschen von Variablen: Kommaseparierte Liste mit Variablennamen, die vom Query entfernt werden sollen. Um alle Variablen zu löschen, kann 'all' gesetzt werden. Standard: 'id,MP,no_cache'</label>
+			<label index="extmng.removeVarsInCanonicalUrl">Canonical Url - Löschen von Variablen: Kommaseparierte Liste mit Variablennamen, die vom Query entfernt werden sollen. Um alle Variablen zu löschen, kann 'all' gesetzt werden. Standard: 'id,MP,no_cache,type'</label>
 		</languageKey>
 	</data>
 </T3locallang>
