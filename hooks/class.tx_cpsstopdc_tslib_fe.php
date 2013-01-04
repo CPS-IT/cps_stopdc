@@ -151,7 +151,7 @@ class tx_cpsstopdc {
 				$id = $pObj->contentPid;
 
 				// Get url and link tag
-				$url = $local_cObj->getTypoLink_URL($id, $queryArray);
+				$url = htmlspecialchars($local_cObj->getTypoLink_URL($id, $queryArray));
 				$canonical = '<link rel="canonical" href="' . (($pObj->config['config']['baseURL']) ? $pObj->config['config']['baseURL'] : '') . $url . '" ' . tx_cpsdevlib_extmgm::getEndingSlash() . '>';
 
 				// Restore mount point and link vars

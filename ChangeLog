@@ -1,3 +1,14 @@
+2013-01-03 Nicole Cordes  <cordes@cps-it.de>
+
+	* Release of cps_stopdc 0.4.0
+
+2013-01-03 Nicole Cordes  <cordes@cps-it.de>
+
+	* Fixed configuration text for removeVarsInCanonicalUrl to display correct default value
+	* Fixed query splitting for decoded query strings
+	* Fixed comparison of parsed urls by decode both query strings
+	* Fixed encoding of canonical tag
+
 2012-03-22 Nicole Cordes  <cordes@cps-it.de>
 
 	* Release of cps_stopdc 0.3.2
