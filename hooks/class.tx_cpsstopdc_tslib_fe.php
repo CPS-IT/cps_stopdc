@@ -53,7 +53,19 @@ class tx_cpsstopdc {
 				// Decode url as it's encoded by TYPO3 function again
 			$queryArray = tx_cpsdevlib_div::queryStringToArray(t3lib_div::getIndpEnv('QUERY_STRING'), 'id');
 			foreach ($queryArray as $key => $value) {
-				$queryArray[$key] = rawurldecode($value);
+				unset($queryArray[$key]);
+				$key = rawurldecode($key);
+				if (is_array($value)) {
+					foreach ($value as $k => $v) {
+						$k = rawurldecode($k);
+							// Only 2 dimensions due to tx_cpsdevlib_div::queryStringToArray function
+							// No check for an array value necessary
+						$queryArray[$key][$k] = rawurldecode($v);
+					}
+					unset($k, $v);
+				} else {
+					$queryArray[$key] = rawurldecode($value);
+				}
 			}
 			unset($key, $value);
 
