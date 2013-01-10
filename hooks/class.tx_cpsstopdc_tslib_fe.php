@@ -51,14 +51,14 @@ class tx_cpsstopdc {
 				// Prepare array with query string information for typolink function
 				// Strip id from array as it's an own parameter
 				// Decode url as it's encoded by TYPO3 function again
-			$queryArray = tx_cpsdevlib_div::queryStringToArray(t3lib_div::getIndpEnv('QUERY_STRING'), 'id');
+			$queryArray = $this->queryStringToArray(t3lib_div::getIndpEnv('QUERY_STRING'), 'id');
 			foreach ($queryArray as $key => $value) {
 				unset($queryArray[$key]);
 				$key = rawurldecode($key);
 				if (is_array($value)) {
 					foreach ($value as $k => $v) {
 						$k = rawurldecode($k);
-							// Only 2 dimensions due to tx_cpsdevlib_div::queryStringToArray function
+							// Only 2 dimensions due to queryStringToArray function
 							// No check for an array value necessary
 						$queryArray[$key][$k] = rawurldecode($v);
 					}
@@ -106,7 +106,6 @@ class tx_cpsstopdc {
 			// Extend CoolURI expiration dates
 		if ($this->extConf['useCoolUri']) {
 			if (t3lib_extMgm::isLoaded('cooluri')) {
-				$GLOBALS['TYPO3_DB']->debugOutput = 1;
 				$GLOBALS['TYPO3_DB']->exec_UPDATEquery(
 					'link_oldlinks',
 					'DATEDIFF(NOW(), tstamp) >= 0',
@@ -147,8 +146,6 @@ class tx_cpsstopdc {
 		}
 	}
 
-
-
 	/**
 	* Add canonical url if not already included
 	*
@@ -177,8 +174,11 @@ class tx_cpsstopdc {
 				if ($this->extConf['removeVarsInCanonicalUrl'] == 'all') {
 					$queryArray = array();
 				} else {
-					$queryArray = tx_cpsdevlib_div::queryStringToArray(t3lib_div::getIndpEnv('QUERY_STRING'), $this->extConf['removeVarsInCanonicalUrl']);
+					$queryArray = $this->queryStringToArray(t3lib_div::getIndpEnv('QUERY_STRING'), $this->extConf['removeVarsInCanonicalUrl']);
 				}
+
+					// Add current language
+				$queryArray['L'] = $pObj->sys_language_uid;
 
 					// Store mount point in temp variable
 				$tempMP = $pObj->MP;
@@ -194,8 +194,7 @@ class tx_cpsstopdc {
 					// Get url and link tag
 				$url = htmlspecialchars($local_cObj->getTypoLink_URL($id, $queryArray));
 				$canonical = '<link rel="canonical" ' .
-					'href="' . (($pObj->config['config']['baseURL']) ? $pObj->config['config']['baseURL'] : '') . $url . '" ' .
-					tx_cpsdevlib_extmgm::getEndingSlash() . '>';
+					'href="' . (($pObj->config['config']['baseURL']) ? $pObj->config['config']['baseURL'] : '') . $url . '" />';
 
 					// Restore mount point and link vars
 				$pObj->MP = $tempMP;
@@ -205,6 +204,56 @@ class tx_cpsstopdc {
 				$pObj->content = str_replace('</head>', $canonical . LF . '</head>', $pObj->content);
 			}
 		}
+	}
+
+	/**
+	 * Converts the query string in an array
+	 *
+	 * @param string $theString: String to convert
+	 * @param string $removeKeys: Mixed data to convert to array. Values are removed from query array
+	 * @param string $theSeparator: Separator to split key/value pairs
+	 * @param string $equalChar: Character to split key from value
+	 * @param string $altSeparators: Comma separated list for alternative separators
+	 *
+	 * @return array The converted array
+	 */
+	protected function queryStringToArray($theString, $removeKeys = '') {
+
+		$result = array();
+
+		if ($theString != '') {
+				// Generate an array with removeKeys values
+			$removeKeys = t3lib_div::trimExplode(',', $removeKeys, 1);
+
+				// Replace alternative separators
+			$theString = str_replace('&amp;', '&', $theString);
+
+				// Explode string to pairs
+			$pairedArray = explode('&', $theString);
+			foreach ($pairedArray as $key => $value) {
+					// Explode pair to key and value
+				list($k, $v) = explode('=', $value);
+					// If not in removeKeys
+				if (!in_array($k, $removeKeys)) {
+						// Check for array in key
+					if (strpos($k, '[') === false) {
+						$result[$k] = $v;
+					} else {
+							// Get two entries maximum
+						list($array, $arrayKey) = explode('[', $k, 2);
+						if (!is_array($result[$array])) {
+							$result[$array] = array();
+						}
+						$result[$array][substr($arrayKey, 0, -1)] = $v;
+						unset($array, $arrayKey);
+					}
+				}
+				unset($k, $v);
+			}
+			unset($key, $value);
+		}
+
+		return $result;
 	}
 }
 

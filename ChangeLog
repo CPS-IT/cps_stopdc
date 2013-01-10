@@ -1,6 +1,10 @@
-2013-01-07 Nicole Cordes  <cordes@cps-it.de>
+2013-03-13 Nicole Cordes  <cordes@cps-it.de>
 
 	* Release of cps_stopdc 0.4.0
+
+2013-01-10 Nicole Cordes  <cordes@cps-it.de>
+
+	* Dropped dependency to cps_devlib
 
 2013-01-07 Nicole Cordes  <cordes@cps-it.de>
 
