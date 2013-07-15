@@ -1,5 +1,9 @@
 2013-03-13 Nicole Cordes  <cordes@cps-it.de>
 
+	* Fixed double slash in canonical url
+
+2013-03-13 Nicole Cordes  <cordes@cps-it.de>
+
 	* Release of cps_stopdc 0.4.0
 
 2013-01-10 Nicole Cordes  <cordes@cps-it.de>

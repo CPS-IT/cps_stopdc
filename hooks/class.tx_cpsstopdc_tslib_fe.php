@@ -193,8 +193,10 @@ class tx_cpsstopdc {
 
 					// Get url and link tag
 				$url = htmlspecialchars($local_cObj->getTypoLink_URL($id, $queryArray));
-				$canonical = '<link rel="canonical" ' .
-					'href="' . (($pObj->config['config']['baseURL']) ? $pObj->config['config']['baseURL'] : '') . $url . '" />';
+				if ($pObj->config['config']['baseURL']) {
+					$url = $pObj->config['config']['baseURL'] . ltrim($url, '/');
+				}
+				$canonical = '<link rel="canonical" ' . 'href="' . $url . '" />';
 
 					// Restore mount point and link vars
 				$pObj->MP = $tempMP;
