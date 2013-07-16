@@ -227,16 +227,27 @@ class tx_cpsstopdc {
 				// Generate an array with removeKeys values
 			$removeKeys = t3lib_div::trimExplode(',', $removeKeys, 1);
 
-				// Replace alternative separators
-			$theString = str_replace('&amp;', '&', $theString);
+				// Parse all keys for special values
+			$filterArray = array();
+			foreach ($removeKeys as $key => $value) {
+				if (strpos($value, '=') !== FALSE) {
+					$filterArray[] = $value;
+				}
+			}
+			unset($key, $value);
+
+
+			// Replace alternative separators
+			$theString = urldecode($theString);
 
 				// Explode string to pairs
 			$pairedArray = explode('&', $theString);
 			foreach ($pairedArray as $key => $value) {
 					// Explode pair to key and value
 				list($k, $v) = explode('=', $value);
-					// If not in removeKeys
-				if (!in_array($k, $removeKeys)) {
+				// If not in removeKeys or special value was defined
+				$test = array_search($value, $filterArray);
+				if (!in_array($k, $removeKeys) && array_search($value, $filterArray) === FALSE) {
 						// Check for array in key
 					if (strpos($k, '[') === false) {
 						$result[$k] = $v;
