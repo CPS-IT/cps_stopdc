@@ -113,7 +113,7 @@ class tx_cpsstopdc {
 		// Check only if it's enabled in extension manager
 		if ($this->extConf['canonicalUrl']) {
 			// Get header suppart
-			$headerStart = strpos($pObj->content, ($pObj->pSetup['headTag'] ? $pObj->pSetup['headTag'] : '<head>'));
+			$headerStart = strpos($pObj->content, (!empty($pObj->pSetup['headTag']) ? $pObj->pSetup['headTag'] : '<head>'));
 			$headerEnd = strpos($pObj->content, '</head>') + 7;
 			$headerData = substr($pObj->content, $headerStart, $headerEnd - $headerStart);
 
