@@ -1,5 +1,4 @@
 <?php
-
 /***************************************************************
  *  Copyright notice
  *
@@ -25,6 +24,7 @@
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+
 class tx_cpsstopdc {
 
 	/**
@@ -43,68 +43,16 @@ class tx_cpsstopdc {
 
 		// If any id was found so far
 		if (intval($GLOBALS['TSFE']->id) > 0) {
-
-			$local_cObj = t3lib_div::makeInstance('tslib_cObj');
-
-			// Prepare array with query string information for typolink function
-			// Strip id from array as it's an own parameter
-			// Decode url as it's encoded by TYPO3 function again
-			$queryArray = $this->queryStringToArray(t3lib_div::getIndpEnv('QUERY_STRING'), 'id');
-			foreach ($queryArray as $key => $value) {
-				unset($queryArray[$key]);
-				$key = rawurldecode($key);
-				if (is_array($value)) {
-					foreach ($value as $k => $v) {
-						$k = rawurldecode($k);
-						// Only 2 dimensions due to queryStringToArray function
-						// No check for an array value necessary
-						$queryArray[$key][$k] = rawurldecode($v);
-					}
-					unset($k, $v);
-				} else {
-					$queryArray[$key] = rawurldecode($value);
-				}
-			}
-			unset($key, $value);
-
-			// Prepare urls for comparison
-			$currentUrlArray = parse_url(t3lib_div::getIndpEnv('REQUEST_URI'));
-			if ($currentUrlArray['path'][0] != '/') {
-				$currentUrlArray['path'] = '/' . $currentUrlArray['path'];
-			}
-			// Decode query part for comparison reason
-			if (isset($currentUrlArray['query'])) {
-				$currentUrlArray['query'] = rawurldecode($currentUrlArray['query']);
-			}
-			$latestUrl = $local_cObj->getTypoLink_URL($GLOBALS['TSFE']->id, $queryArray);
-			$latestUrlArray = parse_url($latestUrl);
-			if ($latestUrlArray['path'][0] != '/') {
-				$latestUrlArray['path'] = '/' . $latestUrlArray['path'];
-			}
-			// Decode query part for comparison reason
-			if (isset($latestUrlArray['query'])) {
-				$latestUrlArray['query'] = rawurldecode($latestUrlArray['query']);
-			}
-
-			// Check for site root
-			if (($GLOBALS['TSFE']->page['is_siteroot']) AND (!count($queryArray))) {
-				$latestUrlArray['path'] = '/';
-				$latestUrl = '/';
-			}
-
-			// Compare arrays
-			$resultArray = array_diff_assoc($currentUrlArray, $latestUrlArray);
+			$currentUrlArray = $this->getCurrentUrlArray();
+			$latestUrlArray = $this->getLatestUrlArray();
 
 			// Redirect if there are any differences
-			if (count($resultArray)) {
-
+			if ($this->needsRedirect($currentUrlArray, $latestUrlArray)) {
 				// Send header from extension configuration
-				if ($this->extConf['header']) {
+				if (!empty($this->extConf['header'])) {
 					header($this->extConf['header']);
 				}
-
-				// Redirect
-				header('Location: ' . t3lib_div::locationHeaderUrl($latestUrl));
+				header('Location: ' . t3lib_div::locationHeaderUrl($this->getRedirectUrl($latestUrlArray)));
 				exit;
 			}
 		}
@@ -213,6 +161,71 @@ class tx_cpsstopdc {
 	}
 
 	/**
+	 * @return array
+	 */
+	protected function getQueryArray() {
+		$queryArray = $this->queryStringToArray(t3lib_div::getIndpEnv('QUERY_STRING'), 'id');
+		foreach ($queryArray as $key => $value) {
+			$key = rawurldecode($key);
+			if (is_array($value)) {
+				foreach ($value as $k => $v) {
+					$k = rawurldecode($k);
+					// Only 2 dimensions due to queryStringToArray function
+					// No check for an array value necessary
+					$queryArray[$key][$k] = rawurldecode($v);
+				}
+				unset($k, $v);
+			} else {
+				$queryArray[$key] = rawurldecode($value);
+			}
+		}
+		unset($key, $value);
+
+		return $queryArray;
+	}
+
+	/**
+	 * @return array
+	 */
+	protected function getCurrentUrlArray() {
+		$currentUrlArray = parse_url(t3lib_div::getIndpEnv('REQUEST_URI'));
+		if ($currentUrlArray['path'][0] != '/') {
+			$currentUrlArray['path'] = '/' . $currentUrlArray['path'];
+		}
+		// Decode query part for comparison reason
+		if (isset($currentUrlArray['query'])) {
+			$currentUrlArray['query'] = rawurldecode($currentUrlArray['query']);
+		}
+
+		return $currentUrlArray;
+	}
+
+	/**
+	 * @return array
+	 */
+	protected function getLatestUrlArray() {
+		// Prepare array with query string information for typolink function
+		// Strip id from array as it's an own parameter
+		// Decode url as it's encoded by TYPO3 function again
+		$queryArray = $this->getQueryArray();
+		$latestUrl = $this->getContentObject()->getTypoLink_URL($GLOBALS['TSFE']->id, $queryArray);
+		$latestUrlArray = parse_url($latestUrl);
+		if ($latestUrlArray['path'][0] != '/') {
+			$latestUrlArray['path'] = '/' . $latestUrlArray['path'];
+		}
+		// Decode query part for comparison reason
+		if (isset($latestUrlArray['query'])) {
+			$latestUrlArray['query'] = rawurldecode($latestUrlArray['query']);
+		}
+		// Check for site root
+		if (($GLOBALS['TSFE']->page['is_siteroot']) AND (!count($queryArray))) {
+			$latestUrlArray['path'] = '/';
+		}
+
+		return $latestUrlArray;
+	}
+
+	/**
 	 * Converts the query string in an array
 	 *
 	 * @param string $theString : String to convert
@@ -234,7 +247,6 @@ class tx_cpsstopdc {
 				}
 			}
 			unset($key, $value);
-
 
 			// Replace alternative separators
 			$theString = urldecode($theString);
@@ -266,6 +278,37 @@ class tx_cpsstopdc {
 		}
 
 		return $result;
+	}
+
+	/**
+	 * @param array $currentUrlArray
+	 * @param array $latestUrlArray
+	 * @return bool
+	 */
+	protected function needsRedirect($currentUrlArray, $latestUrlArray) {
+		$resultArray = array_diff_assoc($currentUrlArray, $latestUrlArray);
+
+		return (bool) count($resultArray);
+	}
+
+	/**
+	 * @param array $urlArray
+	 * @return string
+	 */
+	protected function getRedirectUrl($urlArray) {
+		$location = $urlArray['path'];
+		if (!empty($urlArray['query'])) {
+			$location .= '?' . $urlArray['query'];
+		}
+
+		return $location;
+	}
+
+	/**
+	 * @return tslib_cObj
+	 */
+	protected function getContentObject() {
+		return t3lib_div::makeInstance('tslib_cObj');
 	}
 }
 
