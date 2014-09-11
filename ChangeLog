@@ -1,3 +1,9 @@
+2014-09-11         [RELEASE] Release of cps_stopdc 1.0.0 (Nicole Cordes)
+2014-09-11 e286c9b [BUGFIX] Prevent "Illegal string offset 'headTag'" warning (Nicole Cordes)
+2014-09-11 9cf8289 [BUGFIX] Ignore parameter order for redirect validation (Nicole Cordes)
+2014-09-11 887657d [TASK] Add unit tests (Nicole Cordes)
+2014-09-11 3ffbba1 [TASK] Reformat code according to TYPO3 Coding Guidelines (Nicole Cordes)
+
 2013-03-13 Nicole Cordes  <cordes@cps-it.de>
 
 	* Fixed double slash in canonical url
