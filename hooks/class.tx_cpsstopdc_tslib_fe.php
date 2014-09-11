@@ -220,6 +220,7 @@ class tx_cpsstopdc {
 		// Check for site root
 		if (($GLOBALS['TSFE']->page['is_siteroot']) AND (!count($queryArray))) {
 			$latestUrlArray['path'] = '/';
+			unset($latestUrlArray['query']);
 		}
 
 		return $latestUrlArray;
@@ -286,9 +287,19 @@ class tx_cpsstopdc {
 	 * @return bool
 	 */
 	protected function needsRedirect($currentUrlArray, $latestUrlArray) {
-		$resultArray = array_diff_assoc($currentUrlArray, $latestUrlArray);
+		$needsUpdate = TRUE;
+		if ($currentUrlArray['path'] === $latestUrlArray['path']) {
+			if ($currentUrlArray['query'] === $latestUrlArray['query']) {
+				$needsUpdate = FALSE;
+			} else {
+				$currentQueryArray = explode('&', $currentUrlArray['query']);
+				$latestQueryArray = explode('&', $latestUrlArray['query']);
+				$diffArray = array_diff($currentQueryArray, $latestQueryArray);
+				$needsUpdate = !empty($diffArray);
+			}
+		}
 
-		return (bool) count($resultArray);
+		return $needsUpdate;
 	}
 
 	/**
