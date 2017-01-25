@@ -23,6 +23,16 @@ matrix:
       env: TYPO3=^6.2
     - php: 5.3
       env: TYPO3=^6.2
+    - php: 7.0
+      env: TYPO3=^8.0 CODE_ANALYSIS=yes
+    - php: 7.0
+      env: TYPO3=^7.6 CODE_ANALYSIS=yes
+    - php: 7.0
+      env: TYPO3=^6.2 CODE_ANALYSIS=yes
+  allow_failures:
+    - env: TYPO3=^8.0 CODE_ANALYSIS=yes
+    - env: TYPO3=^7.6 CODE_ANALYSIS=yes
+    - env: TYPO3=^6.2 CODE_ANALYSIS=yes
 
 addons:
   apt:
@@ -53,3 +63,10 @@ script:
      echo;
      echo "Running php lint";
      find . -name \*.php ! -path "./.Build/*" | parallel --gnu php -d display_errors=stderr -l {} > /dev/null \;
+
+   - >
+     if [[ "$CODE_ANALYSIS" == "yes" ]]; then
+       composer require typo3/cms="$TYPO3" phpstan/phpstan="^0.6"
+       git checkout composer.json
+       .Build/bin/phpstan analyse --level 5 ext_localconf.php Classes Tests
+     fi
