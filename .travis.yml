@@ -54,19 +54,30 @@ before_script:
   - export TYPO3_PATH_WEB=$PWD/.Build/Web
 
 script:
-   - >
-     echo;
-     echo "Running unit tests";
-     .Build/bin/phpunit -c .Build/vendor/typo3/cms/typo3/sysext/core/Build/UnitTests.xml Tests/Unit/
+  - >
+    if [ "$CODE_ANALYSIS" == "yes" ]; then
+      git clean -dffx;
+      composer require typo3/cms="$TYPO3" phpstan/phpstan="^0.6" --ignore-platform-reqs;
+      git checkout composer.json;
+      echo;
+      echo "Running php static analysis";
+      echo;
+      echo;
+      .Build/bin/phpstan analyse --level 5 ext_localconf.php Classes Tests;
+    fi
 
-   - >
-     echo;
-     echo "Running php lint";
-     find . -name \*.php ! -path "./.Build/*" | parallel --gnu php -d display_errors=stderr -l {} > /dev/null \;
+  - if [ "$CODE_ANALYSIS" == "yes" ]; then travis_terminate $TRAVIS_TEST_RESULT; fi
 
-   - >
-     if [[ "$CODE_ANALYSIS" == "yes" ]]; then
-       composer require typo3/cms="$TYPO3" phpstan/phpstan="^0.6"
-       git checkout composer.json
-       .Build/bin/phpstan analyse --level 5 ext_localconf.php Classes Tests
-     fi
+  - >
+    echo;
+    echo "Running unit tests";
+    echo;
+    echo;
+    .Build/bin/phpunit -c .Build/vendor/typo3/cms/typo3/sysext/core/Build/UnitTests.xml Tests/Unit/;
+
+  - >
+    echo;
+    echo "Running php lint";
+    echo;
+    echo;
+    find . -name \*.php ! -path "./.Build/*" | parallel --gnu php -d display_errors=stderr -l {} > /dev/null \;;
