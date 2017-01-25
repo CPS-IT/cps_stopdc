@@ -10,7 +10,13 @@ matrix:
     - php: 7.0
       env: TYPO3=^8.0
     - php: 7.0
+      env: TYPO3=^8.0 CODE_ANALYSIS=yes
+    - php: 7.0
       env: TYPO3=^7.6
+    - php: 7.0
+      env: TYPO3=^7.6 CODE_ANALYSIS=yes
+    - php: 7.0
+      env: TYPO3=^6.2 CODE_ANALYSIS=yes
     - php: 5.6
       env: TYPO3=^7.6
     - php: 5.6
@@ -23,16 +29,6 @@ matrix:
       env: TYPO3=^6.2
     - php: 5.3
       env: TYPO3=^6.2
-    - php: 7.0
-      env: TYPO3=^8.0 CODE_ANALYSIS=yes
-    - php: 7.0
-      env: TYPO3=^7.6 CODE_ANALYSIS=yes
-    - php: 7.0
-      env: TYPO3=^6.2 CODE_ANALYSIS=yes
-  allow_failures:
-    - env: TYPO3=^8.0 CODE_ANALYSIS=yes
-    - env: TYPO3=^7.6 CODE_ANALYSIS=yes
-    - env: TYPO3=^6.2 CODE_ANALYSIS=yes
 
 addons:
   apt:

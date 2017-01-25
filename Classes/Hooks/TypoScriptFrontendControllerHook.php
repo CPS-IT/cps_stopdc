@@ -157,7 +157,7 @@ class TypoScriptFrontendControllerHook
                 $id = $pObj->contentPid;
 
                 // Get url and link tag
-                $url = $local_cObj->getTypoLink_URL($id, $queryArray);
+                $url = $local_cObj->getTypoLink_URL((string)$id, $queryArray);
                 if ($pObj->config['config']['baseURL']) {
                     $url = $pObj->config['config']['baseURL'] . ltrim($url, '/');
                 }
