@@ -93,11 +93,15 @@ class TypoScriptFrontendControllerHook
 
         // Extend realurl expiration dates
         if (!empty($this->extensionConfiguration['useRealurl']) && ExtensionManagementUtility::isLoaded('realurl')) {
+            $expirationDate = (int)$this->extensionConfiguration['extendExpiration'] * 24 * 60 * 60;
+            $realurlVersion = ExtensionManagementUtility::getExtensionVersion('realurl');
+            $pathDataTable = version_compare($realurlVersion, '2.0', '<')
+                ? 'tx_realurl_pathcache' : 'tx_realurl_pathdata';
             $GLOBALS['TYPO3_DB']->exec_UPDATEquery(
-                'tx_realurl_pathcache',
+                $pathDataTable,
                 'expire <= ' . time() . ' AND expire > 0',
                 array(
-                    'expire' => 'expire + ' . ((int)$this->extensionConfiguration['extendExpiration'] * 24 * 60 * 60),
+                    'expire' => 'expire + ' . $expirationDate,
                 ),
                 array(
                     0 => 'expire',
@@ -107,7 +111,7 @@ class TypoScriptFrontendControllerHook
                 'tx_realurl_uniqalias',
                 'expire <= ' . time() . ' AND expire > 0',
                 array(
-                    'expire' => 'expire + ' . ((int)$this->extensionConfiguration['extendExpiration'] * 24 * 60 * 60),
+                    'expire' => 'expire + ' . $expirationDate,
                 ),
                 array(
                     0 => 'expire',
